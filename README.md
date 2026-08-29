@@ -2,34 +2,6 @@
 
 QAgent adalah runner QA otomatis berbasis CLI untuk menguji aplikasi web dari URL atau folder source code. Produk ini dirancang agar stabil, deterministik, aman untuk target, ringan dijalankan lokal, serta mudah masuk ke pipeline CI.
 
-Repository ini sudah berisi fondasi Sprint S1-S10 dan beberapa fondasi lanjutan setelah S10:
-
-- Perintah CLI: `init`, `doctor`, `run`, `report open`, `tests`, `baseline create`, `compare`, `dashboard`, dan `adapters list`.
-- Cloud Mode untuk menjalankan QA dari URL target.
-- Source Mode untuk `qagent run .` atau `qagent run ./folder-project`.
-- Loading dan validasi `qa.config.yaml` berbasis schema.
-- Safety policy sebelum target disentuh, termasuk guard untuk production, credentialed URL, host private/reserved, allowlist host, destructive test, active security scan, dan load test.
-- Lifecycle run deterministik dengan summary quality gate.
-- Persistensi lokal memakai SQLite melalui `node:sqlite`.
-- Report JSON, HTML, JUnit, dan XLSX.
-- Baseline regression dan comparison export.
-- Playwright Cloud Mode discovery untuk halaman same-origin.
-- Deteksi console error, network failure, broken navigation, redirect, dan inventory HTTP/API dari traffic browser.
-- Auth profile berbasis environment variable tanpa menyimpan credential mentah.
-- Registry browser test deterministik untuk flow auth/session/dashboard.
-- Screenshot dan trace evidence pada failure browser yang dikonfigurasi.
-- Source runtime detection untuk Node, Python, Generic, dan runtime future yang sudah dikenali.
-- Safe Source Mode command execution untuk lint/typecheck/test/build saat diizinkan eksplisit.
-- API assertions dan RBAC allow/deny matrix.
-- Adapter accessibility `axe-accessibility` berbasis `axe-core`.
-- Adapter performance `browser-performance` berbasis `browser-timing`.
-- Adapter security pasif `passive-security` untuk security headers dan cookie flags.
-- Adapter load smoke `http-load-smoke` dengan opt-in safety dan concurrency terbatas.
-- Dashboard lokal read-only untuk melihat projects, runs, findings, evidence, baselines, dan diagnostics.
-- Run trigger API lokal opsional lewat `POST /api/v1/runs` saat dashboard dijalankan dengan `--allow-run-trigger`.
-- Script release, security, compatibility, dan package dry-run.
-
-Fitur yang masih menjadi ekspansi future adalah integrasi external penuh seperti ZAP passive/active scan, skenario k6, audit Lighthouse penuh, mode server terpusat dengan PostgreSQL, plugin SDK, dan AI assistant. Core saat ini tetap deterministic CLI-first.
 
 ## Mulai Cepat
 
