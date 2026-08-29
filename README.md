@@ -1,169 +1,143 @@
-# QAgent
+<div align="center">
 
-QAgent adalah runner QA otomatis berbasis CLI untuk menguji aplikasi web dari URL atau folder source code. Produk ini dirancang agar stabil, deterministik, aman untuk target, ringan dijalankan lokal, serta mudah masuk ke pipeline CI.
+# 🧪 QAgent
 
+### Automated Web QA Runner
 
-## Mulai Cepat
+**Test • Detect • Compare • Report**
+
+Runner QA otomatis berbasis CLI untuk menguji aplikasi web dari **URL** maupun **source code project**.
+
+![Node.js](https://img.shields.io/badge/Node.js-24+-339933?logo=node.js\&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript\&logoColor=white)
+![Playwright](https://img.shields.io/badge/Playwright-Browser_Testing-2EAD33?logo=playwright\&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-Local_Storage-003B57?logo=sqlite\&logoColor=white)
+![CLI](https://img.shields.io/badge/CLI-First-black?logo=gnubash\&logoColor=white)
+
+</div>
+
+---
+
+## ✨ Tentang QAgent
+
+QAgent adalah runner QA otomatis berbasis CLI yang dirancang untuk melakukan pengujian aplikasi web secara **stabil, deterministik, aman, dan ringan**.
+
+QAgent dapat digunakan secara lokal maupun diintegrasikan ke dalam pipeline CI/CD.
+
+### 🔍 Apa yang dapat diuji?
+
+| Area                 | Kemampuan                          |
+| -------------------- | ---------------------------------- |
+| 🌐 **Browser**       | Playwright browser automation      |
+| 🔌 **API**           | HTTP/API assertion                 |
+| 🔐 **Authorization** | RBAC allow/deny validation         |
+| ♿ **Accessibility**  | axe-core accessibility scanning    |
+| ⚡ **Performance**    | Browser timing & resource analysis |
+| 🛡️ **Security**     | Passive HTTP security checks       |
+| 🚦 **Load**          | Controlled HTTP load smoke testing |
+| 🔄 **Regression**    | Baseline & regression comparison   |
+| 📊 **Reporting**     | HTML, JSON, JUnit, XLSX            |
+| 🖥️ **Dashboard**    | Local QA dashboard                 |
+
+---
+
+## 🚀 Mulai Cepat
+
+### 1️⃣ Install
 
 ```bash
 npm install
 npx playwright install chromium
 npm run build
+```
+
+### 2️⃣ Initialize
+
+```bash
 npm run qagent -- init
 npm run qagent -- doctor
-npm run qagent -- adapters list
 ```
 
-Menjalankan target URL:
+### 3️⃣ Jalankan QA
 
 ```bash
 npm run qagent -- run --url http://localhost:3000
 ```
 
-Menjalankan layer tertentu:
+---
+
+## 🧩 Mode Pengujian
+
+QAgent memiliki dua mode utama.
+
+### ☁️ Cloud Mode
+
+Digunakan untuk menguji aplikasi melalui URL.
 
 ```bash
-npm run qagent -- run --url http://localhost:3000 --layers accessibility
-npm run qagent -- run --url http://localhost:3000 --layers performance
-npm run qagent -- run --url http://localhost:3000 --layers security
+npm run qagent -- run --url http://localhost:3000
 ```
 
-Menjalankan Source Mode:
+Cocok untuk:
+
+* 🌐 Browser testing
+* 🔌 API testing
+* 🔐 RBAC testing
+* ♿ Accessibility
+* ⚡ Performance
+* 🛡️ Security
+* 🚦 Load smoke
+
+### 📂 Source Mode
+
+Digunakan untuk menganalisis source code project.
 
 ```bash
 npm run qagent -- run .
+```
+
+Dengan izin menjalankan source command:
+
+```bash
 npm run qagent -- run . --allow-source-commands
-npm run qagent -- adapters list --source .
 ```
 
-Regression baseline:
+Source Mode dapat memeriksa:
 
-```bash
-npm run qagent -- baseline create --run RUN_ID --name stable
-npm run qagent -- compare --run RUN_ID --baseline stable
-```
+* 🔎 Runtime detection
+* 🧹 Lint
+* 🧠 Typecheck
+* 🧪 Test
+* 📦 Build
 
-Membuka atau mencari lokasi report:
+---
 
-```bash
-npm run qagent -- report open RUN_ID
-npm run qagent -- report open RUN_ID --browser
-```
+## 🧪 Testing Layers
 
-Dashboard lokal:
+### 🌐 Browser Testing
 
-```bash
-npm run qagent -- dashboard
-npm run qagent -- dashboard --allow-run-trigger
-```
-
-Validasi project:
-
-```bash
-npm run test:security
-npm run test:compatibility
-npm run release:check
-```
-
-## Output
-
-Setiap run menulis artifact ke:
-
-```text
-.qagent/runs/<run-id>/
-```
-
-Isi utama folder run:
-
-- `report.json`
-- `report.html`
-- `junit.xml`
-- `report.xlsx`
-- folder `evidence/` jika ada evidence yang perlu disimpan
-
-Comparison regression ditulis ke:
-
-```text
-.qagent/comparisons/<comparison-id>/
-```
-
-Perintah `qagent report open RUN_ID` membaca metadata dari SQLite dan menampilkan path report yang sudah dibuat. Tambahkan `--browser` hanya jika ingin membuka HTML report dengan browser default.
-
-## Cloud Mode
-
-Cloud Mode digunakan saat target berupa URL:
+Browser automation menggunakan **Playwright**.
 
 ```bash
 npm run qagent -- run --url http://localhost:3000
 ```
 
-Mode ini tidak bergantung pada bahasa/framework target. QAgent berinteraksi lewat browser dan HTTP, lalu mengumpulkan halaman, status, judul, link, form, button, console error, network failure, redirect, dan endpoint HTTP/API yang teramati.
+QAgent dapat mendeteksi:
 
-Layer Cloud Mode dapat dipilih melalui `tests.layers` di config atau flag CLI `--layers`.
+* Console error
+* Network failure
+* HTTP failure
+* Redirect
+* Form
+* Button
+* Page discovery
+* Endpoint HTTP/API
 
-## Source Mode
+---
 
-Source Mode digunakan saat target berupa folder:
+### 🔌 API Testing
 
-```bash
-npm run qagent -- run .
-```
-
-Secara default Source Mode bersifat inspection-only. QAgent membaca marker project, memilih runtime adapter, menampilkan capability, dan tidak menjalankan command source kecuali diizinkan lewat:
-
-```bash
---allow-source-commands
-```
-
-atau:
-
-```yaml
-safety:
-  allow_source_commands: true
-```
-
-Runtime yang sudah didukung:
-
-- Node.js / TypeScript
-- Python
-- Generic adapter berbasis command eksplisit
-
-Runtime yang sudah dikenali tetapi masih planned:
-
-- PHP
-- Java
-- .NET
-- Go
-
-## Auth Profile
-
-Credential harus memakai environment variable, bukan literal credential di config.
-
-Contoh:
-
-```yaml
-auth:
-  profiles:
-    admin:
-      loginUrl: /login
-      credentials:
-        username: ${ADMIN_EMAIL}
-        password: ${ADMIN_PASSWORD}
-      selectors:
-        username: '[name="email"]'
-        password: '[name="password"]'
-        submit: 'button[type="submit"]'
-      success:
-        urlContains: /dashboard
-```
-
-QAgent menyimpan browser session untuk kebutuhan test, tetapi tidak menyimpan password/token mentah ke report.
-
-## API dan RBAC
-
-API/RBAC berjalan saat `tests.layers` berisi `api` atau `authorization`.
-
-Contoh ringkas:
+API assertion dikonfigurasi melalui YAML.
 
 ```yaml
 api:
@@ -172,194 +146,188 @@ api:
       method: GET
       path: /health
       expected_status: 200
-  authorization:
-    - permission: manage_users
-      method: GET
-      path: /admin/users
-      allow: [admin]
-      deny: [learner]
-      deny_status: [401, 403]
 ```
 
-Jika role yang seharusnya ditolak mendapat response 2xx, QAgent membuat finding `authorization-bypass`.
+---
 
-## Accessibility
+### 🔐 RBAC / Authorization
 
-Accessibility berjalan saat layer `accessibility` dipilih.
-
-Adapter:
+Memastikan suatu role hanya dapat mengakses resource yang diperbolehkan.
 
 ```text
-axe-accessibility
+Learner
+   │
+   ▼
+GET /admin/users
+   │
+   ▼
+200 OK
+   │
+   ▼
+🚨 Authorization Bypass
 ```
 
-Engine:
+---
+
+### ♿ Accessibility
+
+Menggunakan:
 
 ```text
 axe-core
 ```
 
-Contoh:
+Jalankan:
 
 ```bash
 npm run qagent -- run --url http://localhost:3000 --layers accessibility
 ```
 
-Adapter ini memindai halaman public dari `accessibility.include` atau halaman same-origin hasil discovery. Authenticated accessibility juga bisa memakai profile yang dikonfigurasi di `accessibility.profiles`.
+Default quality gate:
 
-Default gate gagal hanya untuk violation `critical` dan `serious`.
+* 🔴 Critical → FAIL
+* 🟠 Serious → FAIL
 
-Evidence ditulis ke:
+---
 
-```text
-.qagent/runs/<run-id>/evidence/accessibility/
-```
+### ⚡ Performance
 
-## Performance
-
-Performance berjalan saat layer `performance` dipilih.
-
-Adapter:
+Menggunakan:
 
 ```text
 browser-performance
-```
-
-Engine:
-
-```text
+      ↓
 browser-timing
 ```
 
-Contoh:
+Memeriksa:
+
+* First Byte
+* DOM Content Loaded
+* Load Event
+* Transfer Size
+* Resource Count
+
+Jalankan:
 
 ```bash
 npm run qagent -- run --url http://localhost:3000 --layers performance
 ```
 
-Adapter ini membaca Navigation Timing dan Resource Timing dari browser. Threshold default meliputi:
+---
 
-- first byte
-- DOM content loaded
-- load event
-- transfer size
-- jumlah resource
+### 🛡️ Passive Security
 
-Evidence ditulis ke:
-
-```text
-.qagent/runs/<run-id>/evidence/performance/
-```
-
-Catatan: ini adalah performance timing ringan. Audit Lighthouse penuh masih menjadi future external adapter.
-
-## Security Passive
-
-Security pasif berjalan saat layer `security` dipilih.
-
-Adapter:
-
-```text
-passive-security
-```
-
-Engine:
-
-```text
-passive-http
-```
-
-Contoh:
+Memeriksa konfigurasi keamanan HTTP secara pasif.
 
 ```bash
 npm run qagent -- run --url http://localhost:3000 --layers security
 ```
 
-Check yang didukung:
+Pemeriksaan meliputi:
 
-- `content-security-policy`
-- `frame-protection`
-- `x-content-type-options`
-- `referrer-policy`
-- `strict-transport-security`
-- `cookie-http-only`
-- `cookie-secure`
-- `cookie-same-site`
+* 🔐 Content Security Policy
+* 🖼️ Frame Protection
+* 📄 X-Content-Type-Options
+* 🔗 Referrer Policy
+* 🔒 Strict Transport Security
+* 🍪 HttpOnly Cookie
+* 🍪 Secure Cookie
+* 🍪 SameSite Cookie
 
-Adapter ini tidak melakukan active scan, fuzzing, atau mutasi data. Evidence tidak menyimpan nilai cookie mentah.
+> QAgent tidak melakukan active exploitation atau fuzzing melalui adapter passive security.
 
-Evidence ditulis ke:
+---
 
-```text
-.qagent/runs/<run-id>/evidence/security/
-```
+### 🚦 Load Smoke
 
-Catatan: ZAP passive/active scan penuh masih menjadi future external adapter.
-
-## Load Smoke
-
-Load smoke berjalan saat layer `load` dipilih, tetapi selalu membutuhkan opt-in:
+Load testing memerlukan izin eksplisit.
 
 ```yaml
 safety:
   load_test: true
 ```
 
-Adapter:
+Hal ini mencegah load test berjalan secara tidak sengaja terhadap target.
 
-```text
-http-load-smoke
-```
+---
 
-Engine:
+## 🔄 Regression Testing
 
-```text
-http-smoke
-```
-
-Contoh config:
-
-```yaml
-safety:
-  load_test: true
-  max_concurrency: 2
-
-load:
-  include: [/]
-  requestsPerTarget: 3
-  concurrency: 2
-  thresholds:
-    maxErrorRate: 0
-    maxAverageMs: 1000
-    maxP95Ms: 2000
-
-tests:
-  layers: [load]
-```
-
-Jalankan:
+### Buat baseline
 
 ```bash
-npm run qagent -- run --url http://localhost:3000 --config qa.config.yaml
+npm run qagent -- baseline create --run RUN_ID --name stable
 ```
 
-Jika `safety.load_test` tidak `true`, adapter berhenti sebelum menghubungi target. Production target tetap diblokir oleh safety policy.
+### Bandingkan run baru
 
-Evidence ditulis ke:
+```bash
+npm run qagent -- compare --run RUN_ID --baseline stable
+```
+
+Alurnya:
 
 ```text
-.qagent/runs/<run-id>/evidence/load/
+🟢 Stable Run
+      │
+      ▼
+📌 Baseline
+      │
+      ▼
+🔧 Application Change
+      │
+      ▼
+🧪 New Test Run
+      │
+      ▼
+🔄 Compare
+      │
+      ▼
+📊 Regression Result
 ```
 
-Catatan: skenario k6 penuh masih menjadi future external adapter.
+QAgent dapat mendeteksi:
 
-## Dashboard
+* 🔴 New Failure
+* ⚠️ Missing Test
+* 🔄 Status Change
+* 🟢 Resolved Failure
 
-Dashboard lokal berjalan di:
+---
+
+## 📊 Reports
+
+Setiap run menghasilkan artifact pada:
 
 ```text
-http://127.0.0.1:4810
+.qagent/runs/<run-id>/
 ```
+
+Struktur:
+
+```text
+📁 .qagent/
+└── 📁 runs/
+    └── 📁 <run-id>/
+        ├── 🌐 report.html
+        ├── 📄 report.json
+        ├── 📊 report.xlsx
+        ├── 🧪 junit.xml
+        └── 📁 evidence/
+```
+
+| Report           | Kegunaan                    |
+| ---------------- | --------------------------- |
+| 🌐 `report.html` | Membaca hasil secara visual |
+| 📄 `report.json` | Machine-readable output     |
+| 🧪 `junit.xml`   | CI/CD integration           |
+| 📊 `report.xlsx` | Dokumentasi dan analisis QA |
+| 📸 `evidence/`   | Evidence hasil pengujian    |
+
+---
+
+## 🖥️ Dashboard
 
 Jalankan:
 
@@ -367,78 +335,189 @@ Jalankan:
 npm run qagent -- dashboard
 ```
 
-Default dashboard bersifat read-only. Endpoint yang tersedia:
-
-- `GET /health`
-- `GET /ready`
-- `GET /api/v1/projects`
-- `GET /api/v1/runs`
-- `GET /api/v1/runs/:runId`
-- `GET /api/v1/runs/:runId/report`
-- `GET /api/v1/findings`
-- `GET /api/v1/baselines`
-- `GET /api/v1/evidence/:id`
-- `GET /api/v1/system/diagnostics`
-
-Run trigger API hanya aktif jika dashboard dijalankan dengan:
-
-```bash
-npm run qagent -- dashboard --allow-run-trigger
-```
-
-Saat aktif, endpoint berikut tersedia:
+Dashboard tersedia di:
 
 ```text
-POST /api/v1/runs
+http://127.0.0.1:4810
 ```
 
-Body harus berisi tepat salah satu dari `url` atau `sourcePath`.
+Dashboard digunakan untuk melihat:
 
-Contoh PowerShell:
+* 📁 Projects
+* 🧪 Runs
+* 🚨 Findings
+* 📸 Evidence
+* 📌 Baselines
+* 📊 Reports
+* 🩺 Diagnostics
 
-```powershell
-Invoke-RestMethod -Method Post -Uri http://127.0.0.1:4810/api/v1/runs -ContentType 'application/json' -Body '{"url":"http://127.0.0.1:3234","layers":["security"]}'
+Secara default dashboard bersifat **read-only**.
+
+---
+
+## 🚦 Quality Gate
+
+QAgent menggunakan hasil test untuk menentukan apakah sebuah run lolos.
+
+### ✅ PASS
+
+```text
+Tests       7
+Passed      7
+Failed      0
+Errors      0
+
+Quality Gate ──► ✅ PASS
+Exit Code   ──► 0
 ```
 
-## Smoke Test Lokal
+### ❌ FAILED
 
-Browser/cloud smoke:
+```text
+Tests       7
+Passed      6
+Failed      1
 
-```bash
-node tests/fixtures/cloud-good-server.mjs
-npm run qagent -- run --url http://127.0.0.1:3210
+Quality Gate ──► ❌ FAILED
+Exit Code   ──► 1
 ```
 
-Security passive:
+Ini memungkinkan QAgent digunakan sebagai gate dalam CI/CD:
 
-```bash
-node tests/fixtures/security-server.mjs
-npm run qagent -- run --url http://127.0.0.1:3234 --layers security
+```text
+          👨‍💻 Developer
+               │
+               ▼
+           📤 Push
+               │
+               ▼
+           📦 Build
+               │
+               ▼
+          🧪 QAgent
+               │
+               ▼
+        🚦 Quality Gate
+           /         \
+          /           \
+      ✅ PASS        ❌ FAIL
+         │              │
+         ▼              ▼
+      🚀 Deploy      🛑 Block
 ```
 
-Performance:
+---
 
-```bash
-node tests/fixtures/performance-server.mjs
-npm run qagent -- run --url http://127.0.0.1:3233 --layers performance
+## 🛡️ Safety First
+
+QAgent dirancang agar aman secara default.
+
+| Protection               | Default  |
+| ------------------------ | -------- |
+| 🔒 Source command        | Disabled |
+| 🚦 Load testing          | Disabled |
+| 🏭 Production load test  | Blocked  |
+| 🔑 Credential protection | Enabled  |
+| 🌐 URL safety checks     | Enabled  |
+| 📸 Evidence bounding     | Enabled  |
+| 🧹 Credential redaction  | Enabled  |
+| ⚙️ Concurrency limit     | Enabled  |
+
+---
+
+## 🏗️ Architecture
+
+```text
+                         🧪 QAgent
+                            │
+              ┌─────────────┴─────────────┐
+              │                           │
+        📂 Source Mode               ☁️ Cloud Mode
+              │                           │
+              ▼                           ▼
+      Runtime Detection           Browser / HTTP
+              │                           │
+              ▼                           ▼
+      Source Inspection             Test Layers
+              │                           │
+              └─────────────┬─────────────┘
+                            │
+                            ▼
+                       🧪 Test Result
+                            │
+                            ▼
+                       🚨 Findings
+                            │
+                            ▼
+                       📸 Evidence
+                            │
+                            ▼
+                       🗄️ SQLite
+                            │
+                            ▼
+                     🚦 Quality Gate
+                            │
+                            ▼
+                        📊 Report
 ```
 
-Load smoke perlu config opt-in seperti bagian Load Smoke.
+---
 
-## Validasi Release
+## 🧰 Technology
 
-Gunakan:
+| Technology    | Fungsi                |
+| ------------- | --------------------- |
+| 🟢 Node.js    | Runtime               |
+| 🔷 TypeScript | Core development      |
+| 🎭 Playwright | Browser automation    |
+| ♿ axe-core    | Accessibility         |
+| 🗄️ SQLite    | Local persistence     |
+| 📊 XLSX       | Spreadsheet reporting |
 
-```bash
-npm run release:check
-```
+---
 
-Script ini menjalankan:
+## 🗺️ Roadmap
 
-- typecheck
-- full test suite
-- audit offline npm
-- `npm pack --dry-run`
+Future adapter:
 
-Package manifest hanya memasukkan output `dist/`, schema publik, examples, README, dan package metadata. Artifact run lokal dan test fixtures tidak ikut payload release.
+* 🕷️ OWASP ZAP
+* 🚀 k6
+* 💡 Lighthouse
+* 🐘 PostgreSQL centralized mode
+* 🤖 AI-assisted QA
+* 🧩 Plugin ecosystem
+* 📚 Additional runtime adapters
 
+---
+
+## 💡 Design Principles
+
+> 🎯 **Deterministic**
+> Pengujian harus konsisten dan dapat direproduksi.
+
+> 🛡️ **Safe by Default**
+> Operasi berisiko membutuhkan izin eksplisit.
+
+> ⌨️ **CLI First**
+> Seluruh fungsi utama dapat digunakan dari terminal.
+
+> 🌐 **Framework Independent**
+> Cloud Mode bekerja melalui browser dan HTTP.
+
+> 📸 **Evidence Driven**
+> Failure harus memiliki informasi yang dapat ditelusuri.
+
+> ♻️ **CI Friendly**
+> Mendukung exit code, JUnit, JSON dan quality gate.
+
+---
+
+<div align="center">
+
+### 🧪 QAgent
+
+**Inspect · Test · Detect · Compare · Report**
+
+*Automated web QA from source code to running applications.*
+
+</div>
