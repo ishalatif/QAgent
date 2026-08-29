@@ -1,6 +1,6 @@
 # QAgent
 
-QAgent adalah runner QA otomatis berbasis CLI untuk menguji aplikasi web dari URL atau folder source code. Produk ini mengikuti PRD di `docs/assets` dan dirancang agar stabil, deterministik, aman untuk target, ringan dijalankan lokal, serta mudah masuk ke pipeline CI.
+QAgent adalah runner QA otomatis berbasis CLI untuk menguji aplikasi web dari URL atau folder source code. Produk ini dirancang agar stabil, deterministik, aman untuk target, ringan dijalankan lokal, serta mudah masuk ke pipeline CI.
 
 Repository ini sudah berisi fondasi Sprint S1-S10 dan beberapa fondasi lanjutan setelah S10:
 
