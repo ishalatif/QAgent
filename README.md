@@ -442,20 +442,3 @@ Script ini menjalankan:
 
 Package manifest hanya memasukkan output `dist/`, schema publik, examples, README, dan package metadata. Artifact run lokal dan test fixtures tidak ikut payload release.
 
-## Exit Code
-
-- `0`: quality gate passed
-- `1`: quality gate failed
-- `2`: configuration/validation error
-- `3`: runner/internal error
-- `4`: unsafe/disallowed operation
-- `130`: cancelled/interrupted
-
-## Prinsip Keamanan
-
-- Tidak ada credential mentah di report/log.
-- URL target divalidasi sebelum dijalankan.
-- Production target dilindungi dari destructive test, active scan, dan load test.
-- Source Mode tidak menjalankan script tanpa opt-in.
-- Evidence dibatasi dan disanitasi sebelum disimpan.
-- Adapter failure menjadi result `ERROR` atau `BLOCKED`, bukan membuat report hilang.
