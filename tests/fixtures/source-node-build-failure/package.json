@@ -1,0 +1,9 @@
+{
+  "name": "source-node-build-failure",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node -e \"console.log('test ok')\"",
+    "build": "node -e \"console.error('build failed'); process.exit(1)\""
+  }
+}

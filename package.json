@@ -1,0 +1,58 @@
+{
+  "name": "qagent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "QAgent automated web QA runner foundation.",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "bin": {
+    "qagent": "dist/apps/cli/src/index.js"
+  },
+  "files": [
+    "dist",
+    "docs/schemas",
+    "examples",
+    "README.md"
+  ],
+  "imports": {
+    "#contracts": "./dist/packages/contracts/src/index.js",
+    "#config": "./dist/packages/config/src/index.js",
+    "#core": "./dist/packages/core/src/index.js",
+    "#storage": "./dist/packages/storage/src/index.js",
+    "#reporting": "./dist/packages/reporting/src/index.js",
+    "#dashboard": "./dist/packages/dashboard/src/index.js",
+    "#process-runner": "./dist/packages/process-runner/src/index.js",
+    "#runtime-adapters": "./dist/packages/runtime-adapters/src/index.js",
+    "#regression": "./dist/packages/regression/src/index.js",
+    "#quality-adapters": "./dist/packages/quality-adapters/src/index.js",
+    "#api-testing": "./dist/packages/api-testing/src/index.js",
+    "#browser-playwright": "./dist/packages/browser-playwright/src/index.js",
+    "#browser-tests": "./dist/packages/browser-tests/src/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build --silent && npm run test:unit --silent && npm run test:integration --silent",
+    "test:unit": "vitest run tests/unit --environment node",
+    "test:integration": "node --test tests/integration/*.test.mjs",
+    "test:security": "vitest run tests/unit/safety.test.ts tests/unit/process-runner.test.ts tests/unit/dashboard.test.ts tests/unit/redaction.test.ts --environment node",
+    "test:compatibility": "vitest run tests/unit/runtime-adapters.test.ts tests/unit/config.test.ts tests/unit/source-config.test.ts --environment node",
+    "release:check": "npm run check && npm test && npm audit --offline && npm pack --dry-run",
+    "qagent": "node dist/apps/cli/src/index.js"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "axe-core": "4.10.2",
+    "commander": "12.1.0",
+    "pino": "9.4.0",
+    "playwright": "1.62.1",
+    "yaml": "2.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.0.0",
+    "typescript": "5.6.3",
+    "vitest": "3.2.6"
+  }
+}

@@ -1,0 +1,23 @@
+project:
+  name: source-generic-good
+
+target:
+  environment: local
+
+source:
+  adapter: generic
+  commands:
+    test:
+      executable: node
+      args: ["-e", "console.log('generic test ok')"]
+      timeout_seconds: 10
+    build:
+      executable: node
+      args: ["-e", "console.log('generic build ok')"]
+      timeout_seconds: 10
+
+safety:
+  allow_source_commands: true
+
+tests:
+  layers: [source]

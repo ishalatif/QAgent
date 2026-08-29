@@ -1,0 +1,121 @@
+project:
+  name: example-web-app
+
+target:
+  environment: staging
+  url: https://staging.example.com
+  allowed_hosts:
+    - staging.example.com
+
+source:
+  adapter: auto
+  fallback_to_cloud: true
+
+safety:
+  destructive: false
+  active_security_scan: false
+  load_test: false
+  max_concurrency: 3
+  allow_source_commands: false
+
+auth:
+  profiles:
+    admin:
+      loginUrl: /login
+      credentials:
+        username: ${ADMIN_EMAIL}
+        password: ${ADMIN_PASSWORD}
+      selectors:
+        username: '[name="email"]'
+        password: '[name="password"]'
+        submit: 'button[type="submit"]'
+      success:
+        urlContains: /dashboard
+      # Optional for API/RBAC checks:
+      # api:
+      #   headers:
+      #     authorization: Bearer ${ADMIN_API_TOKEN}
+
+api:
+  assertions: []
+  authorization: []
+
+accessibility:
+  enabled: true
+  engine: axe
+  failOn: [critical, serious]
+  maxViolations:
+    critical: 0
+    serious: 0
+  exclude:
+    - /logout
+  maxPages: 25
+  profiles: []
+
+performance:
+  enabled: true
+  engine: browser-timing
+  maxPages: 10
+  waitUntil: load
+  timeout_seconds: 15
+  thresholds:
+    maxFirstByteMs: 1000
+    maxDomContentLoadedMs: 3000
+    maxLoadEventMs: 5000
+    maxTransferSizeBytes: 3145728
+    maxResourceCount: 100
+
+security:
+  enabled: true
+  engine: passive-http
+  failOn:
+    - content-security-policy
+    - frame-protection
+    - x-content-type-options
+    - strict-transport-security
+    - cookie-http-only
+    - cookie-secure
+    - cookie-same-site
+  exclude:
+    - /logout
+  maxPages: 10
+  timeout_seconds: 10
+  checks:
+    content-security-policy: true
+    frame-protection: true
+    x-content-type-options: true
+    referrer-policy: true
+    strict-transport-security: true
+    cookie-http-only: true
+    cookie-secure: true
+    cookie-same-site: true
+
+load:
+  enabled: true
+  engine: http-smoke
+  maxPages: 3
+  timeout_seconds: 10
+  requestsPerTarget: 3
+  concurrency: 1
+  thresholds:
+    maxErrorRate: 0
+    maxAverageMs: 1000
+    maxP95Ms: 2000
+
+discovery:
+  max_pages: 100
+  max_depth: 2
+  same_origin_only: true
+  exclude:
+    - /logout
+
+tests:
+  layers: [browser, api, authorization, accessibility, performance, security, load]
+  retries: 1
+
+permissions: {}
+
+report:
+  formats: [html, json, junit, xlsx]
+  evidence_on: failure
+  redact_headers: [authorization, cookie, set-cookie]

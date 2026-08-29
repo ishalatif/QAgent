@@ -1,0 +1,8 @@
+{
+  "name": "source-node-failing-test",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node -e \"console.error('target test failed'); process.exit(1)\""
+  }
+}
